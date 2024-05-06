@@ -36,20 +36,21 @@
             android:layout_marginRight="16dp"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonRegistrate"
             android:layout_width="229dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="420dp"
             android:layout_marginRight="86dp"
-            android:text="Regístrate"
-            android:fontFamily="@font/open_sans"
             android:backgroundTint="@color/secundario"
-            android:textSize="30sp"/>
+            android:fontFamily="@font/open_sans"
+            android:onClick="abrirLoginActivity"
+            android:text="Regístrate"
+            android:textSize="30sp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonIniciaSesion"
             android:layout_width="229dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

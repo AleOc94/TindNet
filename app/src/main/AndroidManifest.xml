@@ -13,7 +13,7 @@
         android:theme="@style/Theme.TindNet"
         tools:targetApi="31">
         <activity
-            android:name=".clien_login"
+            android:name=".LoginEmpresa"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -24,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
+
     </application>
 
 </manifest>
