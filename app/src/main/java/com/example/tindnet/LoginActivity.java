@@ -18,8 +18,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void abrirLoginEmpresa(View view) {
-// Crear un Intent para abrir la actividad de la página de login
+    // Crear un Intent para abrir la actividad de la página de login
         Intent intent = new Intent(this, LoginEmpresa.class);
+        startActivity(intent); // Iniciar la actividad
+    }
+
+    public void abrirLoginCliente(View view) {
+    // Crear un Intent para abrir la actividad de la página de login
+        Intent intent = new Intent(this, LoginCliente.class);
         startActivity(intent); // Iniciar la actividad
     }
 }

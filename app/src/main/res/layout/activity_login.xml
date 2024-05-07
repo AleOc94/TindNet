@@ -64,14 +64,15 @@
             android:id="@+id/buttonCliente"
             android:layout_width="229dp"
             android:layout_height="wrap_content"
-            android:text="Cliente"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="550dp"
             android:layout_marginRight="86dp"
-            android:fontFamily="@font/open_sans"
             android:backgroundTint="@color/secundario"
-            android:textSize="30sp"/>
+            android:fontFamily="@font/open_sans"
+            android:onClick="abrirLoginCliente"
+            android:text="Cliente"
+            android:textSize="30sp" />
 
 
     </RelativeLayout>
