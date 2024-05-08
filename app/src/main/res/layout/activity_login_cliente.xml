@@ -32,7 +32,7 @@
         android:layout_marginRight="10dp" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="16"
@@ -73,19 +73,6 @@
             android:textSize="16sp"
             android:background="@color/principal"/>
 
-        <EditText
-            android:id="@+id/editRepetirContrasenaCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="26"
-            android:inputType="textPassword|textVisiblePassword"
-            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            android:hint="Repetir contraseña"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="400dp"
-            android:fontFamily="@font/zen_dots"
-            android:textSize="16sp"
-            android:background="@color/principal"/>
 
         <Button
             android:id="@+id/buttonContinuar"

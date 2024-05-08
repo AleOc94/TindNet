@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -65,5 +66,9 @@ dependencies {
     // Dependencia de autentificacion
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    implementation ("com.google.firebase:firebase-common:21.0.0")
+    implementation ("com.google.firebase:firebase-firestore:21.0.0")
+
 
 }
