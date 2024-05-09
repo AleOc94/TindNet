@@ -19,15 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
-public class LoginEmpresa extends AppCompatActivity {
-    private static final String TAG="LoginEmpresa";
+public class SingUpCompany extends AppCompatActivity {
+    private static final String TAG="SingUpCompany";
     private EditText editTextName, editTextEmail, editTextPassword, editTextNif;
     private FirebaseAuth mAuth;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_empresa);
+        setContentView(R.layout.activity_sing_up_company);
 
 
         // ...
@@ -57,13 +57,13 @@ public class LoginEmpresa extends AppCompatActivity {
     private void createUserWithEmailAndPassword(String email, String password) {
         // Verificar si la contraseña cumple con los requisitos
         if (password.length() < 6 || password.length() > 20) {
-            Toast.makeText(LoginEmpresa.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpCompany.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Verificar si el correo electrónico es válido
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(LoginEmpresa.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpCompany.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -76,7 +76,7 @@ public class LoginEmpresa extends AppCompatActivity {
                     assert result != null;
                     if (result.getSignInMethods() != null && result.getSignInMethods().size() > 0) {
                         // El correo electrónico ya está registrado
-                        Toast.makeText(LoginEmpresa.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingUpCompany.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
                     } else {
                         // El correo electrónico no está registrado, procede con la creación de usuario
                         mAuth.createUserWithEmailAndPassword(email, password)
@@ -95,10 +95,10 @@ public class LoginEmpresa extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Toast.makeText(LoginEmpresa.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpCompany.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             Log.e(TAG, "sendEmailVerification", task.getException());
-                                                            Toast.makeText(LoginEmpresa.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpCompany.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                 });
@@ -108,16 +108,19 @@ public class LoginEmpresa extends AppCompatActivity {
                                         } else {
                                             // Si la creación de usuario falla, muestra un mensaje al usuario
                                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                            Toast.makeText(LoginEmpresa.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SingUpCompany.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
                                             updateUI(null);
                                         }
+
+
+
                                     }
                                 });
                     }
                 } else {
                     // Error al verificar el correo electrónico
                     Log.e(TAG, "fetchSignInMethodsForEmail:failure", task.getException());
-                    Toast.makeText(LoginEmpresa.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingUpCompany.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -126,7 +129,7 @@ public class LoginEmpresa extends AppCompatActivity {
 // Aquí puedes actualizar la interfaz de usuario según el estado de autenticación
 // Por ejemplo, puedes redirigir al usuario a otra actividad después de que haya iniciado sesión correctamente
         if (user != null) {
-            Intent intent = new Intent(LoginEmpresa.this, MainActivity.class); //Cambiarlo por la página siguiente
+            Intent intent = new Intent(SingUpCompany.this, MainActivity.class); //Cambiarlo por la página siguiente
             startActivity(intent);
             finish();
         }

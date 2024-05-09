@@ -25,11 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 
-public class LoginCliente extends AppCompatActivity {
-    private static final String TAG="LoginCliente";
+public class SingUpClient extends AppCompatActivity {
+    private static final String TAG="SingUpClient";
     private EditText editTextName, editTextEmail, editTextPassword;
 
-    private Button botonRegistrarCliente;
     private FirebaseAuth mAuth;
 
     private DatabaseReference mDatabase;
@@ -37,13 +36,12 @@ public class LoginCliente extends AppCompatActivity {
 
 
 
-    // Constante para indicar el tipo de usuario
-    private static final String USER_TYPE = "cliente";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_cliente);
+        setContentView(R.layout.activity_sing_up_client);
 
         // Manejador para el botón de continuar
 
@@ -71,19 +69,35 @@ public class LoginCliente extends AppCompatActivity {
 
             // Llamada al método createUserWithEmailAndPassword con los datos obtenidos
                 createUserWithEmailAndPassword(email, password);
+
+                guardarDatosClienteEnFirebase(name, email);
+
+
             }
         });
+    }
+
+    private void guardarDatosClienteEnFirebase(String nombre, String email) {
+        // Después de registrar al cliente exitosamente
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+
+        // Guarda los datos del cliente en la base de datos
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        usersRef.child("nombre").setValue(nombre);
+        usersRef.child("email").setValue(email);
+        usersRef.child("tipo").setValue("cliente"); // Añadir el tipo de usuario como "cliente"
     }
     private void createUserWithEmailAndPassword(String email, String password) {
         // Verificar si la contraseña cumple con los requisitos
         if (password.length() < 6 || password.length() > 20) {
-            Toast.makeText(LoginCliente.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpClient.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Verificar si el correo electrónico es válido
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(LoginCliente.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpClient.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -96,7 +110,7 @@ public class LoginCliente extends AppCompatActivity {
                     assert result != null;
                     if (result.getSignInMethods() != null && result.getSignInMethods().size() > 0) {
                     // El correo electrónico ya está registrado
-                        Toast.makeText(LoginCliente.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingUpClient.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
                     } else {
                     // El correo electrónico no está registrado, procede con la creación de usuario
                         mAuth.createUserWithEmailAndPassword(email, password)
@@ -125,10 +139,10 @@ public class LoginCliente extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Toast.makeText(LoginCliente.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpClient.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             Log.e(TAG, "sendEmailVerification", task.getException());
-                                                            Toast.makeText(LoginCliente.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpClient.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                 });
@@ -138,16 +152,18 @@ public class LoginCliente extends AppCompatActivity {
                                         } else {
                                             // Si la creación de usuario falla, muestra un mensaje al usuario
                                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                            Toast.makeText(LoginCliente.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SingUpClient.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
                                             updateUI(null);
                                         }
+
+
                                     }
                                 });
                     }
                 } else {
                     // Error al verificar el correo electrónico
                     Log.e(TAG, "fetchSignInMethodsForEmail:failure", task.getException());
-                    Toast.makeText(LoginCliente.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingUpClient.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
