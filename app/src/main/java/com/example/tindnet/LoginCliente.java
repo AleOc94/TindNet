@@ -71,8 +71,23 @@ public class LoginCliente extends AppCompatActivity {
 
             // Llamada al método createUserWithEmailAndPassword con los datos obtenidos
                 createUserWithEmailAndPassword(email, password);
+                guardarDatosClienteEnFirebase(name, email);
+
+
             }
         });
+    }
+
+    private void guardarDatosClienteEnFirebase(String nombre, String email) {
+        // Después de registrar al cliente exitosamente
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+
+        // Guarda los datos del cliente en la base de datos
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        usersRef.child("nombre").setValue(nombre);
+        usersRef.child("email").setValue(email);
+        usersRef.child("tipo").setValue("cliente"); // Añadir el tipo de usuario como "cliente"
     }
     private void createUserWithEmailAndPassword(String email, String password) {
         // Verificar si la contraseña cumple con los requisitos
@@ -109,11 +124,7 @@ public class LoginCliente extends AppCompatActivity {
                                             FirebaseUser user = mAuth.getCurrentUser();
                                             String userId = user.getUid();
 
-                                            // Crear el objeto Cliente
-                                            Cliente cliente = new Cliente("name", "email");
 
-                                            // Guardar el cliente en la base de datos
-                                            mDatabase.child(userId).setValue(cliente);
                                         // Creación de usuario exitosa
                                             Log.d(TAG, "createUserWithEmail:success");
                                             FirebaseUser currentUser = mAuth.getCurrentUser();

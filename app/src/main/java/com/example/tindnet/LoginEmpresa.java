@@ -18,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginEmpresa extends AppCompatActivity {
     private static final String TAG="LoginEmpresa";
@@ -51,8 +53,23 @@ public class LoginEmpresa extends AppCompatActivity {
 
                 // Llamada al método createUserWithEmailAndPassword con los datos obtenidos
                 createUserWithEmailAndPassword(email, password);
+                guardarDatosEmpresaEnFirebase(name, email);
+
+
             }
         });
+    }
+
+    private void guardarDatosEmpresaEnFirebase(String nombre, String email) {
+        // Después de registrar al cliente exitosamente
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+
+        // Guarda los datos del cliente en la base de datos
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        usersRef.child("nombre").setValue(nombre);
+        usersRef.child("email").setValue(email);
+        usersRef.child("tipo").setValue("empresa"); // Añadir el tipo de usuario como "cliente"
     }
     private void createUserWithEmailAndPassword(String email, String password) {
         // Verificar si la contraseña cumple con los requisitos
