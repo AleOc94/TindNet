@@ -67,8 +67,12 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
 
-    implementation ("com.google.firebase:firebase-common:21.0.0")
-    implementation ("com.google.firebase:firebase-firestore:21.0.0")
+    // Dependencias de Firebase
+    implementation ("com.google.firebase:firebase-firestore:25.0.0")
+    implementation ("com.google.firebase:firebase-analytics:22.0.0")
+    implementation ("com.google.firebase:firebase-auth:23.0.0")
+
+
 
     implementation ("com.google.firebase:firebase-analytics:22.0.0")
     implementation ("com.google.firebase:firebase-auth:23.0.0")

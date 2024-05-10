@@ -1,6 +1,5 @@
 package com.example.tindnet;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,46 +20,67 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginEmpresa extends AppCompatActivity {
-    private static final String TAG="LoginEmpresa";
-    private EditText editTextName, editTextEmail, editTextPassword, editTextNif;
+
+
+
+
+
+public class SingUpClient extends AppCompatActivity {
+    private static final String TAG="SingUpClient";
+    private EditText editTextName, editTextEmail, editTextPassword;
+
     private FirebaseAuth mAuth;
-    @SuppressLint("MissingInflatedId")
+
+    private DatabaseReference mDatabase;
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_empresa);
+        setContentView(R.layout.activity_sing_up_client);
 
+        // Manejador para el botón de continuar
+
+// Inicializar Firebase Authentication y Database
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("clientes");
 
         // ...
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // Obtención de referencias a los EditTexts
         editTextName = findViewById(R.id.editTextNombre);
-        editTextNif = findViewById(R.id.editNif);
         editTextEmail = findViewById(R.id.editTextTextEmailAddress);
-        editTextPassword = findViewById(R.id.editContrasena);
+        editTextPassword = findViewById(R.id.editContrasenaCliente);
 
         Button buttonCreateAccount = findViewById(R.id.buttonContinuar);
         buttonCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtención de los datos de los EditTexts
+
+            // Obtención de los datos de los EditTexts
                 String name = editTextName.getText().toString();
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
-                String nif = editTextNif.getText().toString();
 
-                // Llamada al método createUserWithEmailAndPassword con los datos obtenidos
+            // Llamada al método createUserWithEmailAndPassword con los datos obtenidos
                 createUserWithEmailAndPassword(email, password);
-                guardarDatosEmpresaEnFirebase(name, email);
+<<<<<<< HEAD:app/src/main/java/com/example/tindnet/LoginCliente.java
+=======
+
+>>>>>>> 6e5c890b07eefe5511494c1e418e500d907b88a9:app/src/main/java/com/example/tindnet/SingUpClient.java
+                guardarDatosClienteEnFirebase(name, email);
 
 
             }
         });
     }
 
-    private void guardarDatosEmpresaEnFirebase(String nombre, String email) {
+    private void guardarDatosClienteEnFirebase(String nombre, String email) {
         // Después de registrar al cliente exitosamente
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
@@ -69,18 +89,18 @@ public class LoginEmpresa extends AppCompatActivity {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
         usersRef.child("nombre").setValue(nombre);
         usersRef.child("email").setValue(email);
-        usersRef.child("tipo").setValue("empresa"); // Añadir el tipo de usuario como "cliente"
+        usersRef.child("tipo").setValue("cliente"); // Añadir el tipo de usuario como "cliente"
     }
     private void createUserWithEmailAndPassword(String email, String password) {
         // Verificar si la contraseña cumple con los requisitos
         if (password.length() < 6 || password.length() > 20) {
-            Toast.makeText(LoginEmpresa.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpClient.this, "La contraseña debe tener entre 6 y 20 caracteres", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Verificar si el correo electrónico es válido
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(LoginEmpresa.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SingUpClient.this, "El formato del correo electrónico no es válido", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -92,18 +112,24 @@ public class LoginEmpresa extends AppCompatActivity {
                     SignInMethodQueryResult result = task.getResult();
                     assert result != null;
                     if (result.getSignInMethods() != null && result.getSignInMethods().size() > 0) {
-                        // El correo electrónico ya está registrado
-                        Toast.makeText(LoginEmpresa.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
+                    // El correo electrónico ya está registrado
+                        Toast.makeText(SingUpClient.this, "El correo electrónico ya está registrado. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show();
                     } else {
-                        // El correo electrónico no está registrado, procede con la creación de usuario
+                    // El correo electrónico no está registrado, procede con la creación de usuario
                         mAuth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
-                                            // Creación de usuario exitosa
-                                            Log.d(TAG, "createUserWithEmail:success");
+
+                                            // Obtener el ID del usuario creado
                                             FirebaseUser user = mAuth.getCurrentUser();
+                                            String userId = user.getUid();
+
+
+                                        // Creación de usuario exitosa
+                                            Log.d(TAG, "createUserWithEmail:success");
+                                            FirebaseUser currentUser = mAuth.getCurrentUser();
 
                                             // Verificar si el correo electrónico está verificado
                                             if (user != null && !user.isEmailVerified()) {
@@ -112,10 +138,10 @@ public class LoginEmpresa extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Toast.makeText(LoginEmpresa.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpClient.this, "Se ha enviado un correo electrónico de verificación. Por favor, verifica tu cuenta.", Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             Log.e(TAG, "sendEmailVerification", task.getException());
-                                                            Toast.makeText(LoginEmpresa.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(SingUpClient.this, "No se pudo enviar el correo electrónico de verificación.", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                 });
@@ -125,16 +151,18 @@ public class LoginEmpresa extends AppCompatActivity {
                                         } else {
                                             // Si la creación de usuario falla, muestra un mensaje al usuario
                                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                            Toast.makeText(LoginEmpresa.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SingUpClient.this, "Error al crear la cuenta. Por favor, inténtalo de nuevo.", Toast.LENGTH_SHORT).show();
                                             updateUI(null);
                                         }
+
+
                                     }
                                 });
                     }
                 } else {
                     // Error al verificar el correo electrónico
                     Log.e(TAG, "fetchSignInMethodsForEmail:failure", task.getException());
-                    Toast.makeText(LoginEmpresa.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SingUpClient.this, "Error al verificar el correo electrónico.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -143,7 +171,8 @@ public class LoginEmpresa extends AppCompatActivity {
 // Aquí puedes actualizar la interfaz de usuario según el estado de autenticación
 // Por ejemplo, puedes redirigir al usuario a otra actividad después de que haya iniciado sesión correctamente
         if (user != null) {
-            Intent intent = new Intent(LoginEmpresa.this, MainActivity.class); //Cambiarlo por la página siguiente
+            Intent intent = new Intent (this, MainActivity.class);
+            //Intent intent = new Intent(LoginCliente.this, MainActivity.class); //Cambiarlo por la página siguiente
             startActivity(intent);
             finish();
         }
@@ -158,3 +187,4 @@ public class LoginEmpresa extends AppCompatActivity {
         }
     }
 }
+

@@ -19,18 +19,16 @@
             android:name=".HomeClient2"
             android:exported="false" />
         <activity
-            android:name=".SingUp"
+            android:name=".SingUp" />
+
+        <activity
+            android:name=".LoginActivity"
+
             android:exported="false" />
-        <activity
-            android:name=".HomeCompany"
-            android:exported="false"
-            android:label="@string/title_activity_home_company" />
-        <activity
-            android:name=".HomeClient"
-            android:exported="false"
-            android:label="@string/title_activity_home_client" />
-        <activity android:name=".LoginCliente" />
-        <activity android:name=".LoginEmpresa" />
+
+
+        <activity android:name=".SingUpClient" />
+        <activity android:name=".SingUpCompany" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -40,7 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".SingUpActivity"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>
